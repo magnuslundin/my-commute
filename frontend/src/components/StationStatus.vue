@@ -26,12 +26,6 @@ import { getRealTimeInformationByStation } from '@/services/rt-information.api.j
 
 export default {
   name: 'StationStatus',
-  props: {
-    station: {
-      type: Object,
-      required: true
-    }
-  },
   created () {
     this.getRealTimeInformation()
   },
@@ -39,6 +33,11 @@ export default {
     return {
       realtimeInformation: [],
       latestUpdated: ''
+    }
+  },
+  computed: {
+    station () {
+      return this.$store.state.station
     }
   },
   methods: {

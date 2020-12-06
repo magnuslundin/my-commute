@@ -32,12 +32,6 @@ import { getStations } from '@/services/stations.api.js'
 
 export default {
   name: 'SelectStation',
-  props: {
-    value: {
-      type: Object,
-      default: null
-    }
-  },
   data () {
     return {
       searchString: '',
@@ -50,7 +44,7 @@ export default {
       this.getStationsByString(this.searchString)
     },
     selectStation (station) {
-      this.$emit('input', station)
+      this.$store.commit('setStation', station)
       this.stations = []
       this.searchString = ''
     },

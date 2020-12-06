@@ -1,11 +1,9 @@
 <template>
   <div id="app">
-    <select-station 
-      v-model="station"
-    />
+    <select-station />
     <station-status 
-      v-if="station"
-      :station="station"
+      v-if="selectedStation"
+      :station="selectedStation"
     />
   </div>
 </template>
@@ -20,14 +18,9 @@ export default {
     SelectStation,
     StationStatus,
   },
-  data () {
-    return {
-      station: null
-    }
-  },
-  methods: {
-    getStation () {
-      return this.station
+  computed: {
+    selectedStation () {
+      return this.$store.state.station
     }
   }
 }
