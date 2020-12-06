@@ -1,10 +1,14 @@
 <template>
-  <div id="app">
-    <select-station />
-    <station-status 
-      v-if="selectedStation"
-      :station="selectedStation"
-    />
+  <div id="my-commute" class="container-fluid mt-5">
+    <div class="row justify-content-md-center">
+      <div class="col-lg-4 col-md-8 col-sm-12">
+        <select-station />
+        <station-status 
+          v-if="selectedStation"
+          :station="selectedStation"
+        />
+      </div>
+    </div>
   </div>
 </template>
 
@@ -13,7 +17,7 @@ import SelectStation from '@/components/SelectStation'
 import StationStatus from '@/components/StationStatus'
 
 export default {
-  name: 'App',
+  name: 'myCommute',
   components: {
     SelectStation,
     StationStatus,
@@ -25,14 +29,3 @@ export default {
   }
 }
 </script>
-
-<style>
-#app {
-  font-family: Avenir, Helvetica, Arial, sans-serif;
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
-  text-align: center;
-  color: #2c3e50;
-  margin-top: 60px;
-}
-</style>

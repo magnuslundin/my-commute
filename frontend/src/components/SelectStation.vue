@@ -1,30 +1,48 @@
 <template>
-    <div class="selection-station">
-      <div id="selection-station--input">
-        <input 
-          type="text"
-          v-model="searchString"
-        />
-        <button 
-          type="button"
-          @click="search()"
-        >
-          Search
-        </button>
+  <div class="container-fluid">
+    <div class="row">
+      <div class="col">
+        <form>
+          <div class="input-group input-group-lg">
+            <input 
+              type="text"
+              id="inputSearch"
+              class="form-control input-group-lg"
+              placeholder="Search for your station/stop"
+              v-model="searchString"
+            />
+            <span class="input-group-btn ml-3">
+              <button 
+                type="button"
+                class="btn btn-primary btn-lg"
+                @click="search()"
+              >
+                Search
+              </button>
+            </span>
+          </div>
+        </form>
       </div>
-      <div id="select-station--result">
-        <ul>
+    </div>
+    <div class="row">
+      <div class="col">
+        <ul id="searchResults" class="list-group mt-3">
           <li
             v-for="(station, index) in stations"
-            class="select-station--result-item"
+            class="list-group-item"
+            :class="{ active: hoveredSearchResultIndex === index }"
             :key="index"
+            role="button"
             @click="selectStation(station)"
+            @mouseover="hoveredSearchResultIndex = index"
+            @mouseleave="hoveredSearchResultIndex = -1"
           >
             {{ station.Name }} - {{ station.SiteId }}
           </li>
         </ul>
       </div>
     </div>
+  </div>
 </template>
 
 <script>
@@ -35,7 +53,8 @@ export default {
   data () {
     return {
       searchString: '',
-      stations: []
+      stations: [],
+      hoveredSearchResultIndex: -1
     }
   },
   methods: {
@@ -60,12 +79,3 @@ export default {
   }
 }
 </script>
-
-<style scoped>
-  li.select-station--result-item {
-    cursor: pointer;
-  }
-    li.select-station--result-item:hover {
-      background-color: #c0c0c0;
-    }
-</style>

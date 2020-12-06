@@ -1,22 +1,37 @@
 <template>
-  <div id="station-status">
-    <h1>{{ station.Name }}</h1>
-    <span>Updated {{ this.latestUpdated }} </span>
-    <button 
-      type="button"
-      @click="getRealTimeInformation()"
-    >
-      Reload
-    </button>
-    <div class="station-status--event-container">
-      <ul>
-        <li
-          v-for="(event, index) in realtimeInformation"
-          :key="index"
-        >
-          <span class="label">{{ event.DisplayTime }}</span> {{ event.LineNumber }} &#187; {{ event.Destination }} : {{ event.TimeTabledDateTime }}
-        </li>
-      </ul>
+  <div class="container-fluid">
+    <div class="row">
+      <div class="col">
+        <h1 class="my-3">{{ station.Name }}</h1>
+      </div>
+    </div>
+    <div class="row">
+      <div class="col">
+        <ul class="list-group">
+          <li
+            v-for="(event, index) in realtimeInformation"
+            class="list-group-item"
+            :key="index"
+          >
+            <span class="badge badge-secondary mr-2">{{ event.DisplayTime }}</span> 
+            {{ event.LineNumber }} &#187; {{ event.Destination }} <span class="text-faded"> {{ event.TimeTabledDateTime }}</span>
+          </li>
+        </ul>
+      </div>
+    </div>
+    <div class="row">
+      <div class="col">
+        <p>
+          <small>Updated {{ this.latestUpdated }}         
+            <a
+              href="#"
+              @click.prevent="getRealTimeInformation()"
+            >
+              Reload
+            </a>
+          </small>
+        </p>
+      </div>
     </div>
   </div>
 </template>
@@ -56,10 +71,7 @@ export default {
 </script>
 
 <style scoped>
-  .label {
-    background-color: #00008B;
-    color: #FAFAFA;
-    padding: 2px;
-    border-radius: 3px;
+  .text-faded {
+    color: #d3d3d3;
   }
 </style>
