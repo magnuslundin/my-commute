@@ -63,6 +63,7 @@ export default {
   },
   methods: {
     getRealTimeInformation () {
+      this.realtimeInformation = []
       getRealTimeInformationByStation(this.station.SiteId, 60)
         .then(response => {
           this.realtimeInformation = response.data.ResponseData.Buses
@@ -80,6 +81,7 @@ export default {
   .text-faded {
     color: #d3d3d3;
   }
+
   .fade-enter-active, .fade-leave-active {
     transition: opacity .5s;
   }

@@ -10,16 +10,8 @@
               class="form-control input-group-lg"
               placeholder="Search for your station/stop"
               v-model="searchString"
+              @input="search()"
             />
-            <span class="input-group-btn ml-3">
-              <button 
-                type="button"
-                class="btn btn-primary btn-lg"
-                @click="search()"
-              >
-                Search
-              </button>
-            </span>
           </div>
         </form>
       </div>
@@ -53,6 +45,7 @@
 
 <script>
 import { getStations } from '@/services/stations.api.js'
+import _ from 'lodash'
 
 export default {
   name: 'SelectStation',
@@ -63,13 +56,20 @@ export default {
       hoveredSearchResultIndex: -1
     }
   },
+  created () {
+    this.search = _.throttle(this.search, 800)
+  },
   methods: {
     search () {
-      this.$emit('input', null)
-      this.getStationsByString(this.searchString)
+      if (this.searchString.length > 0) {
+        this.getStationsByString(this.searchString)
+      } else {
+        this.stations = []
+      }
     },
     selectStation (station) {
       this.$store.commit('setStation', station)
+      this.$store.commit('setSearchVisible', false)
       this.stations = []
       this.searchString = ''
     },

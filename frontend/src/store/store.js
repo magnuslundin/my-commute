@@ -5,11 +5,15 @@ Vue.use(Vuex)
 
 export default new Vuex.Store({
   state: {
-    station: null
+    station: null,
+    searchVisible: true
   },
   mutations: {
     setStation (state, station) {
         state.station = station
-    }
+    },
+    setSearchVisible (state, visibility) {
+      state.searchVisible = visibility
+  }
   }
 })
