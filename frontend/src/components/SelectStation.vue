@@ -26,20 +26,26 @@
     </div>
     <div class="row">
       <div class="col">
-        <ul id="searchResults" class="list-group mt-3">
-          <li
-            v-for="(station, index) in stations"
-            class="list-group-item"
-            :class="{ active: hoveredSearchResultIndex === index }"
-            :key="index"
-            role="button"
-            @click="selectStation(station)"
-            @mouseover="hoveredSearchResultIndex = index"
-            @mouseleave="hoveredSearchResultIndex = -1"
+        <transition name="slide-fade">
+          <ul
+            v-if="stations.length > 0"
+            id="searchResults" 
+            class="list-group mt-3"
           >
-            {{ station.Name }} - {{ station.SiteId }}
-          </li>
-        </ul>
+            <li
+              v-for="(station, index) in stations"
+              class="list-group-item"
+              :class="{ active: hoveredSearchResultIndex === index }"
+              :key="index"
+              role="button"
+              @click="selectStation(station)"
+              @mouseover="hoveredSearchResultIndex = index"
+              @mouseleave="hoveredSearchResultIndex = -1"
+            >
+              {{ station.Name }} - {{ station.SiteId }}
+            </li>
+          </ul>
+        </transition>
       </div>
     </div>
   </div>
@@ -79,3 +85,21 @@ export default {
   }
 }
 </script>
+
+<style scoped>
+  .slide-fade-enter-active {
+    transition: all .3s ease;
+  }
+  .slide-fade-leave-active {
+    transition: all .2s ease;
+  }
+  .slide-fade-enter, .slide-fade-leave-to {
+    transform: translateY(-20px);
+    opacity: 0;
+  }
+  .slide-fade-leave-to {
+    transform: translateY(-20px);
+    opacity: 0;
+    z-index: -1;
+  }
+</style>

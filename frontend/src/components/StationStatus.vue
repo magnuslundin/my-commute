@@ -6,18 +6,24 @@
       </div>
     </div>
     <div class="row">
-      <div class="col">
-        <ul class="list-group">
-          <li
-            v-for="(event, index) in realtimeInformation"
-            class="list-group-item"
-            :key="index"
-          >
-            <span class="badge badge-secondary mr-2">{{ event.DisplayTime }}</span> 
-            {{ event.LineNumber }} &#187; {{ event.Destination }} <span class="text-faded"> {{ event.TimeTabledDateTime }}</span>
-          </li>
-        </ul>
-      </div>
+      
+        <div class="col">
+          <transition name="fade">
+            <ul
+              v-if="realtimeInformation.length > 0"
+              class="list-group"
+            >
+              <li
+                v-for="(event, index) in realtimeInformation"
+                class="list-group-item"
+                :key="index"
+              >
+                <span class="badge badge-secondary mr-2">{{ event.DisplayTime }}</span> 
+                {{ event.LineNumber }} &#187; {{ event.Destination }} <span class="text-faded"> {{ event.TimeTabledDateTime }}</span>
+              </li>
+            </ul>
+          </transition>
+        </div>
     </div>
     <div class="row">
       <div class="col">
@@ -73,5 +79,11 @@ export default {
 <style scoped>
   .text-faded {
     color: #d3d3d3;
+  }
+  .fade-enter-active, .fade-leave-active {
+    transition: opacity .5s;
+  }
+  .fade-enter, .fade-leave-to /* .fade-leave-active below version 2.1.8 */ {
+    opacity: 0;
   }
 </style>
