@@ -43,35 +43,17 @@
 </template>
 
 <script>
-import { getRealTimeInformationByStation } from '@/services/rt-information.api.js'
-
 export default {
   name: 'StationStatus',
-  created () {
-    this.getRealTimeInformation()
-  },
-  data () {
-    return {
-      realtimeInformation: [],
-      latestUpdated: ''
-    }
-  },
   computed: {
     station () {
       return this.$store.state.settings.station
-    }
-  },
-  methods: {
-    getRealTimeInformation () {
-      this.realtimeInformation = []
-      getRealTimeInformationByStation(this.station.SiteId, 60)
-        .then(response => {
-          this.realtimeInformation = response.data.ResponseData.Buses
-          this.latestUpdated = response.data.ResponseData.LatestUpdate
-        })
-        .catch(error => {
-          console.log(error)
-        })
+    },
+    realtimeInformation () {
+      return this.$store.state.stationInformation.data
+    },
+    latestUpdated () {
+      return this.$store.state.stationInformation.updated
     }
   }
 }

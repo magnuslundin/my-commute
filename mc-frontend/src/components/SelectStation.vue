@@ -68,7 +68,7 @@ export default {
       }
     },
     selectStation (station) {
-      this.$store.commit('setStation', station)
+      this.$store.dispatch('selectStation', station)
       this.$store.commit('setSearchVisible', false)
       this.stations = []
       this.searchString = ''
