@@ -11,7 +11,7 @@ export default new Vuex.Store({
       trafficType: null,
       destination: null
     },
-    stationInformation: {
+    stationDepartures: {
       data: [],
       updated: null
     },
@@ -22,7 +22,7 @@ export default new Vuex.Store({
       commit('setStation', station)
       getRealTimeInformationByStation(station.SiteId, 60)
       .then(response => {
-        commit('setStationInformation', {
+        commit('setStationDepartures', {
           data: response.data.ResponseData,
           updated: response.data.ResponseData.LatestUpdate
         })
@@ -33,8 +33,8 @@ export default new Vuex.Store({
     }
   },
   mutations: {
-    setStationInformation (state, stationInformation) {
-      state.stationInformation = stationInformation
+    setStationDepartures (state, stationDepartures) {
+      state.stationDepartures = stationDepartures
     },
     setStation (state, station) {
         state.settings.station = station

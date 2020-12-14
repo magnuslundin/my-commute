@@ -39,17 +39,17 @@
     <div class="row">
         <div class="col">
           <p
-            v-if="realtimeInformation.length === 0 && selectedTrafficType !== null"
+            v-if="currentStationDepartures.length === 0 && selectedTrafficType !== null"
           >
             No traffic of this type in near time at this location.
           </p>
           <transition name="fade">
             <ul
-              v-if="realtimeInformation.length > 0"
+              v-if="currentStationDepartures.length > 0"
               class="list-group"
             >
               <li
-                v-for="(event, index) in realtimeInformationFiltered"
+                v-for="(event, index) in currentStationDeparturesFiltered"
                 class="list-group-item"
                 :key="index"
               >
@@ -84,17 +84,20 @@ export default {
     station () {
       return this.$store.state.settings.station
     },
-    realtimeInformation () {
+    allStationDepartures () {
+      return this.$store.state.stationDepartures.data
+    },
+    currentStationDepartures () {
       if (this.selectedTrafficType === null) {
         return []
       }
-      return this.$store.state.stationInformation.data[this.selectedTrafficType]
+      return this.allStationDepartures[this.selectedTrafficType]
     },
-    realtimeInformationFiltered () {
+    currentStationDeparturesFiltered () {
       if (this.selectedDestination === null) {
-        return this.realtimeInformation
+        return this.currentStationDepartures
       }
-      return this.realtimeInformation
+      return this.currentStationDepartures
       .filter(item => 
         item.LineNumber === this.selectedDestination.LineNumber &&
         item.Destination === this.selectedDestination.Destination
@@ -110,7 +113,7 @@ export default {
     },
     destinations() {
       const unique = {}
-      this.realtimeInformation.forEach (item => {
+      this.currentStationDepartures.forEach (item => {
         unique[item.LineNumber + item.Destination] = {
           'LineNumber': item.LineNumber,
           'Destination': item.Destination
@@ -127,7 +130,7 @@ export default {
       }      
     },
     latestUpdated () {
-      return this.$store.state.stationInformation.updated
+      return this.$store.state.stationDepartures.updated
     }
   },
   data () {
