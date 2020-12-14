@@ -118,6 +118,14 @@ export default {
       })
       return [...Object.values(unique)]
     },
+    selectedDestination: {
+      get: function () {
+        return this.$store.state.settings.destination
+      },
+      set: function (newValue) {
+        this.$store.commit('setDestination', newValue)
+      }      
+    },
     latestUpdated () {
       return this.$store.state.stationInformation.updated
     }
@@ -129,8 +137,7 @@ export default {
         'Buses',
         'Trains',
         'Trams'
-      ],
-      selectedDestination: null
+      ]
     }
   },
   methods: {

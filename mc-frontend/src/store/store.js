@@ -8,7 +8,8 @@ export default new Vuex.Store({
   state: {
     settings: {
       station: null,
-      trafficType: null
+      trafficType: null,
+      destination: null
     },
     stationInformation: {
       data: [],
@@ -40,6 +41,9 @@ export default new Vuex.Store({
     },
     setTrafficType (state, trafficType) {
       state.settings.trafficType = trafficType
+    },
+    setDestination (state, destination) {
+      state.settings.destination = destination
     },
     setSearchVisible (state, visibility) {
       state.searchVisible = visibility
