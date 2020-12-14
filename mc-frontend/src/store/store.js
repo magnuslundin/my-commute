@@ -18,9 +18,12 @@ export default new Vuex.Store({
     searchVisible: true
   },
   actions: {
-    selectStation ({ commit }, station) {
+    selectStation ({ dispatch, commit }, station) {
       commit('setStation', station)
-      getRealTimeInformationByStation(station.SiteId, 60)
+      dispatch('updateStationDepartures')
+    },
+    updateStationDepartures ({ commit, state}) {
+      getRealTimeInformationByStation(state.settings.station.SiteId, 60)
       .then(response => {
         commit('setStationDepartures', {
           data: response.data.ResponseData,

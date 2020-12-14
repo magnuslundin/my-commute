@@ -67,7 +67,7 @@
           <small>Updated {{ this.latestUpdated }}         
             <a
               href="#"
-              @click.prevent="getRealTimeInformation()"
+              @click.prevent="updateDepartureInformation()"
             >
               Reload
             </a>
@@ -156,6 +156,9 @@ export default {
             this.selectedDestination.Destination === destination.Destination
             : false
 
+    },
+    updateDepartureInformation () {
+      this.$store.dispatch('updateStationDepartures')
     }
   }
 }
