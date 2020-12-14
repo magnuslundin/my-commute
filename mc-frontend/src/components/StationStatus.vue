@@ -6,8 +6,25 @@
       </div>
     </div>
     <div class="row">
-      
+      <div class="col">
+        <button
+          v-for="trafficType in trafficTypes"
+          :key="trafficType"
+          class="btn btn-sm btn-primary mr-2 mb-2"
+          :class="{ active: selectedTrafficType === trafficType }"
+          @click.prevent="selectedTrafficType = trafficType"
+        >
+          {{ trafficType }}
+        </button>
+      </div>
+    </div>
+    <div class="row">
         <div class="col">
+          <p
+            v-if="realtimeInformation.length === 0 && selectedTrafficType !== null"
+          >
+            No traffic of this type in near time at this location.
+          </p>
           <transition name="fade">
             <ul
               v-if="realtimeInformation.length > 0"
@@ -50,10 +67,31 @@ export default {
       return this.$store.state.settings.station
     },
     realtimeInformation () {
-      return this.$store.state.stationInformation.data
+      if (this.selectedTrafficType === null) {
+        return []
+      }
+      return this.$store.state.stationInformation.data[this.selectedTrafficType]
+    },
+    selectedTrafficType: {
+      get: function () {
+        return this.$store.state.settings.trafficType
+      },
+      set: function (newValue) {
+        this.$store.commit('setTrafficType', newValue)
+      }
     },
     latestUpdated () {
       return this.$store.state.stationInformation.updated
+    }
+  },
+  data () {
+    return {
+      trafficTypes: [
+        'Metros',
+        'Buses',
+        'Trains',
+        'Trams'
+      ]
     }
   }
 }

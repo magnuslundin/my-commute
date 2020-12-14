@@ -7,7 +7,8 @@ Vue.use(Vuex)
 export default new Vuex.Store({
   state: {
     settings: {
-      station: null
+      station: null,
+      trafficType: null
     },
     stationInformation: {
       data: [],
@@ -21,7 +22,7 @@ export default new Vuex.Store({
       getRealTimeInformationByStation(station.SiteId, 60)
       .then(response => {
         commit('setStationInformation', {
-          data: response.data.ResponseData.Buses,
+          data: response.data.ResponseData,
           updated: response.data.ResponseData.LatestUpdate
         })
       })
@@ -36,6 +37,9 @@ export default new Vuex.Store({
     },
     setStation (state, station) {
         state.settings.station = station
+    },
+    setTrafficType (state, trafficType) {
+      state.settings.trafficType = trafficType
     },
     setSearchVisible (state, visibility) {
       state.searchVisible = visibility
