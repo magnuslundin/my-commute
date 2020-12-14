@@ -11,6 +11,7 @@
           <button
             v-for="trafficType in trafficTypes"
             :key="trafficType"
+            :disabled="allStationDepartures ? allStationDepartures[trafficType].length === 0 : true"
             class="btn btn-sm btn-secondary mb-2"
             :class="{ active: selectedTrafficType === trafficType }"
             @click.prevent="selectTrafficType(trafficType)"
