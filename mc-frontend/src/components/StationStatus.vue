@@ -7,15 +7,33 @@
     </div>
     <div class="row">
       <div class="col">
-        <button
-          v-for="trafficType in trafficTypes"
-          :key="trafficType"
-          class="btn btn-sm btn-primary mr-2 mb-2"
-          :class="{ active: selectedTrafficType === trafficType }"
-          @click.prevent="selectedTrafficType = trafficType"
+        <div class="btn-group">
+          <button
+            v-for="trafficType in trafficTypes"
+            :key="trafficType"
+            class="btn btn-sm btn-secondary mb-2"
+            :class="{ active: selectedTrafficType === trafficType }"
+            @click.prevent="selectTrafficType(trafficType)"
+          >
+            {{ trafficType }}
+          </button>
+        </div>
+        <b-dropdown 
+          id="destination-dropdown" 
+          :text="selectedDestination ? selectedDestination.Destination : 'Filter destination'" 
+          size="sm"
+          class="ml-2 align-top"
+          :disabled="destinations.length === 0"
         >
-          {{ trafficType }}
-        </button>
+          <b-dropdown-item
+            v-for="(destination, index) in destinations"
+            :key="index"
+            :active="isSelectedDestination(destination)"
+            @click.prevent="selectedDestination = destination"
+          >
+            {{ destination.LineNumber + ' - ' + destination.Destination }}
+          </b-dropdown-item>
+        </b-dropdown>
       </div>
     </div>
     <div class="row">
@@ -31,7 +49,7 @@
               class="list-group"
             >
               <li
-                v-for="(event, index) in realtimeInformation"
+                v-for="(event, index) in realtimeInformationFiltered"
                 class="list-group-item"
                 :key="index"
               >
@@ -72,6 +90,16 @@ export default {
       }
       return this.$store.state.stationInformation.data[this.selectedTrafficType]
     },
+    realtimeInformationFiltered () {
+      if (this.selectedDestination === null) {
+        return this.realtimeInformation
+      }
+      return this.realtimeInformation
+      .filter(item => 
+        item.LineNumber === this.selectedDestination.LineNumber &&
+        item.Destination === this.selectedDestination.Destination
+      )
+    },
     selectedTrafficType: {
       get: function () {
         return this.$store.state.settings.trafficType
@@ -79,6 +107,16 @@ export default {
       set: function (newValue) {
         this.$store.commit('setTrafficType', newValue)
       }
+    },
+    destinations() {
+      const unique = {}
+      this.realtimeInformation.forEach (item => {
+        unique[item.LineNumber + item.Destination] = {
+          'LineNumber': item.LineNumber,
+          'Destination': item.Destination
+        }
+      })
+      return [...Object.values(unique)]
     },
     latestUpdated () {
       return this.$store.state.stationInformation.updated
@@ -91,7 +129,22 @@ export default {
         'Buses',
         'Trains',
         'Trams'
-      ]
+      ],
+      selectedDestination: null
+    }
+  },
+  methods: {
+    selectTrafficType (trafficType) {
+      this.selectedTrafficType = trafficType
+      this.selectedDestination = null
+    },
+    isSelectedDestination (destination) {
+      if (!destination) return false
+      return this.selectedDestination ?
+            this.selectedDestination.LineNumber === destination.LineNumber && 
+            this.selectedDestination.Destination === destination.Destination
+            : false
+
     }
   }
 }
