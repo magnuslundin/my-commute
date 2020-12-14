@@ -38,7 +38,7 @@ export default {
   },
   computed: {
     selectedStation () {
-      return this.$store.state.station
+      return this.$store.state.settings.station
     },
     searchVisible: {
       get: function ()  {

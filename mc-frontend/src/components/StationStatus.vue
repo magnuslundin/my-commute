@@ -58,7 +58,7 @@ export default {
   },
   computed: {
     station () {
-      return this.$store.state.station
+      return this.$store.state.settings.station
     }
   },
   methods: {
