@@ -10,6 +10,7 @@
               class="form-control input-group-lg"
               placeholder="Search for your station/stop"
               v-model="searchString"
+              autocomplete="off"
               @input="search()"
             />
           </div>
