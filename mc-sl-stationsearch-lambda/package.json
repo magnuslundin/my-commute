@@ -1,0 +1,15 @@
+{
+  "name": "mc-sl-stationsearch-lambda",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "build": "zip -q -r mc-sl-stationsearch ."
+  },
+  "author": "Magnus Lundin",
+  "license": "ISC",
+  "dependencies": {
+    "axios": "^0.21.1",
+    "dotenv": "^8.2.0"
+  }
+}
