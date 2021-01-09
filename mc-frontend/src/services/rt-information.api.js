@@ -1,8 +1,13 @@
 import httpClient from './httpClient';
 
-const REALTIME_INFORMATION_SEARCH_END_POINT = '/station/realtimeinformation';
+const API_REALTIME_INFORMATION_URL = process.env.VUE_APP_API_REALTIME_INFORMATION_URL
 
-const getRealTimeInformationByStation = (siteId, timeWindowInMinutes) => httpClient.get(REALTIME_INFORMATION_SEARCH_END_POINT+`/${siteId}/${timeWindowInMinutes}`)
+const getRealTimeInformationByStation = (siteId, timeWindowInMinutes) => httpClient.get(API_REALTIME_INFORMATION_URL, {
+    params: {
+        siteId: siteId,
+        timeWindow: timeWindowInMinutes
+    }
+})
 
 export {
     getRealTimeInformationByStation
