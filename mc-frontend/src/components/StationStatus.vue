@@ -9,19 +9,19 @@
       <div class="col">
         <div class="btn-group">
           <button
-            v-for="trafficType in trafficTypes"
-            :key="trafficType"
-            :disabled="allStationDepartures ? allStationDepartures[trafficType].length === 0 : true"
+            v-for="(trafficType, index) in trafficTypes"
+            :key="index"
+            :disabled="allStationDepartures ? allStationDepartures.length === 0 : true"
             class="btn btn-sm btn-secondary mb-2"
             :class="{ active: selectedTrafficType === trafficType }"
             @click.prevent="selectTrafficType(trafficType)"
           >
-            {{ trafficType }}
+            {{ trafficType.name }}
           </button>
         </div>
         <b-dropdown 
           id="destination-dropdown" 
-          :text="selectedDestination ? selectedDestination.Destination : 'Filter destination'" 
+          :text="selectedDestination ? selectedDestination.direction : 'Filter destination'" 
           size="sm"
           class="ml-2 align-top"
           :disabled="destinations.length === 0"
@@ -32,7 +32,7 @@
             :active="isSelectedDestination(destination)"
             @click.prevent="selectedDestination = destination"
           >
-            {{ destination.LineNumber + ' - ' + destination.Destination }}
+            {{ destination.transportNumber + ' - ' + destination.direction }}
           </b-dropdown-item>
         </b-dropdown>
       </div>
@@ -40,9 +40,9 @@
     <div class="row">
         <div class="col">
           <p
-            v-if="currentStationDepartures.length === 0 && selectedTrafficType !== null"
+            v-if="currentStationDepartures.length === 0"
           >
-            No traffic of this type in near time at this location.
+            No traffic in near time at this location.
           </p>
           <transition name="fade">
             <ul
@@ -50,12 +50,12 @@
               class="list-group"
             >
               <li
-                v-for="(event, index) in currentStationDeparturesFiltered"
+                v-for="(departure, index) in currentStationDeparturesFiltered"
                 class="list-group-item"
                 :key="index"
               >
-                <span class="badge badge-secondary mr-2">{{ event.DisplayTime }}</span> 
-                {{ event.LineNumber }} &#187; {{ event.Destination }} <span class="text-faded"> {{ event.TimeTabledDateTime }}</span>
+                <span class="badge badge-secondary mr-2">{{ departure.time }}</span> 
+                {{ departure.transportNumber }} &#187; {{ departure.direction }} <span class="text-faded"> {{ departure.TimeTabledDateTime }}</span>
               </li>
             </ul>
           </transition>
@@ -90,9 +90,11 @@ export default {
     },
     currentStationDepartures () {
       if (this.selectedTrafficType === null) {
-        return []
+        return this.allStationDepartures
       }
-      return this.allStationDepartures[this.selectedTrafficType]
+      return this.allStationDepartures.filter(station => {
+        return this.selectedTrafficType.categories.includes(station.transportCategory) 
+      })
     },
     currentStationDeparturesFiltered () {
       if (this.selectedDestination === null) {
@@ -100,8 +102,8 @@ export default {
       }
       return this.currentStationDepartures
       .filter(item => 
-        item.LineNumber === this.selectedDestination.LineNumber &&
-        item.Destination === this.selectedDestination.Destination
+        item.transportNumber === this.selectedDestination.transportNumber &&
+        item.direction === this.selectedDestination.direction
       )
     },
     selectedTrafficType: {
@@ -115,9 +117,9 @@ export default {
     destinations() {
       const unique = {}
       this.currentStationDepartures.forEach (item => {
-        unique[item.LineNumber + item.Destination] = {
-          'LineNumber': item.LineNumber,
-          'Destination': item.Destination
+        unique[item.transportNumber + item.direction] = {
+          'transportNumber': item.transportNumber,
+          'direction': item.direction
         }
       })
       return [...Object.values(unique)]
@@ -137,10 +139,22 @@ export default {
   data () {
     return {
       trafficTypes: [
-        'Metros',
-        'Buses',
-        'Trains',
-        'Trams'
+        {
+          name: 'Metros',
+          categories: []
+        },
+        {
+          name: 'Buses',
+          categories: ['BLT'],
+        },
+        {
+          name: 'Trains',
+          categories: ['JLT']
+        },
+        {
+          name: 'Trams',
+          categories: []
+        }
       ]
     }
   },
@@ -152,8 +166,8 @@ export default {
     isSelectedDestination (destination) {
       if (!destination) return false
       return this.selectedDestination ?
-            this.selectedDestination.LineNumber === destination.LineNumber && 
-            this.selectedDestination.Destination === destination.Destination
+            this.selectedDestination.transportNumber === destination.transportNumber && 
+            this.selectedDestination.direction === destination.direction
             : false
 
     },

@@ -35,7 +35,7 @@
               @mouseover="hoveredSearchResultIndex = index"
               @mouseleave="hoveredSearchResultIndex = -1"
             >
-              {{ station.Name }} - {{ station.SiteId }}
+              {{ station.name }}
             </li>
           </ul>
         </transition>
@@ -77,7 +77,7 @@ export default {
     getStationsByString (string) {
       getStations(string)
         .then(response => {
-          this.stations = response.data.ResponseData
+          this.stations = response.data.StopLocation
         })
         .catch(error => {
           console.log(error)
